@@ -222,11 +222,11 @@ function generateChallan() {
     qrContainer.innerHTML = '';
     new QRCode(qrContainer, {
         text: verifyUrl,
-        width: 55,
-        height: 55,
+        width: 128,
+        height: 128,
         colorDark: "#000000",
         colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
+        correctLevel: QRCode.CorrectLevel.M
     });
 
     document.getElementById('preview-overlay').style.display = 'block';
