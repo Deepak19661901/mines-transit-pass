@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mineral Transit Pass Portal | Bihar Government</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+</head>
+
+<body>
+
+    <!-- VERIFICATION VIEW (OFFICIAL BIHAR MINES UI) -->
+    <div id="verify-view" style="display: none;">
+        <div class="v-header-fixed">
+            <img src="https://khanansoft.bihar.gov.in/Images/JIMMS_Logo.png" alt="Bihar Gov">
+        </div>
+
+        <div class="v-content-card">
+            <div class="v-tab-green">View Pass Details</div>
+            <div class="v-fieldset">
+                <legend>e Pass Details</legend>
+                <table class="v-table">
+                    <tbody id="verify-body">
+                        <!-- Populated by script.js -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="v-footer-text">
+                Copyright © 2026, Mines & Geology Department, Government of Bihar, All Rights Reserved.
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="main-portal">
+        <header class="portal-header">
+            <img src="assets/images/emblem.png" alt="Govt. of Bihar" class="gov-emblem">
+            <div class="header-text">
+                <h1>खनिज अभिवहन पास पोर्टल</h1>
+                <p>Department of Mines & Geology | Government of Bihar</p>
+            </div>
+        </header>
+
+        <main class="form-card">
+            <form id="challan-form">
+
+                <div class="section-title">सामान्य विवरण (General Details)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>चालान / पास नं. (Pass No)</label>
+                        <input type="text" id="field-1">
+                    </div>
+                    <div class="input-group">
+                        <label>वर्ष (Year)</label>
+                        <select id="field-2">
+                            <!-- Populated via script.js -->
+                        </select>
+                    </div>
+                    <input type="hidden" id="field-ref">
+                </div>
+                <div class="section-title">सेटली एवं स्रोत विवरण (Settlee Details)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>विवरण चुनें (Choose Preset)</label>
+                        <select id="preset-selector">
+                            <!-- Populated via script.js -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>घाट / खदान का स्थान एवं क्षेत्र</label>
+                        <input type="text" id="field-3">
+                    </div>
+                    <div class="input-group">
+                        <label>वार्षिक ई-कैप</label>
+                        <input type="text" id="field-5">
+                    </div>
+                    <div class="input-group">
+                        <label>सेटली का नाम एवं पता</label>
+                        <input type="text" id="field-6">
+                    </div>
+                    <div class="input-group">
+                        <label>सेटली मोबाइल</label>
+                        <input type="text" id="field-7">
+                    </div>
+                    <div class="input-group">
+                        <label>पट्टे की समाप्ति तिथि</label>
+                        <input type="text" id="field-8">
+                    </div>
+                </div>
+
+                <div class="section-title">जारी एवं वैधता (Issue & Validity)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>चालान जारी करने का समय</label>
+                        <input type="datetime-local" id="field-9-picker">
+                        <input type="hidden" id="field-9">
+                    </div>
+                    <div class="input-group">
+                        <label>चालान समाप्ति का समय (Auto 24h)</label>
+                        <input type="text" id="field-10">
+                    </div>
+                </div>
+
+                <div class="section-title">ग्राहक एवं गंतव्य (Customer & Destination)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>ग्राहक का नाम</label>
+                        <input type="text" id="field-11">
+                    </div>
+                    <div class="input-group fixed">
+                        <label>ग्राहक का मोबाइल नंबर</label>
+                        <input type="text" id="field-12" value="0000000000" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>वाहन का गंतव्य स्थान</label>
+                        <input type="text" id="field-13">
+                    </div>
+                </div>
+
+                <div class="section-title">खनिज एवं परिवहन विवरण (Mineral & Transport)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>खनिज का नाम (Mineral Name)</label>
+                        <div class="radio-options">
+                            <label class="radio-label">
+                                <input type="radio" name="mineral-type" value="STONE-STONE(CHIPS)-40 MM" checked>
+                                Stone Chips
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="mineral-type" value="SAND-YELLOWSAND(BALUGHAT)-NoSize">
+                                Yellow Sand
+                            </label>
+                        </div>
+                        <input type="hidden" id="field-14" value="STONE-STONE(CHIPS)-40 MM">
+                    </div>
+                    <div class="input-group fixed">
+                        <label>खनिज का प्रकार</label>
+                        <input type="text" id="field-15" value="Minor" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>खनिज का वजन (Mt.)</label>
+                        <input type="number" step="0.001" id="field-16">
+                    </div>
+                    <div class="input-group fixed">
+                        <label>खनिज की मात्रा (Cft.) [Calculated]</label>
+                        <input type="text" id="field-17" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>धर्म काँटा का नाम</label>
+                        <input type="text" id="field-18">
+                    </div>
+                    <div class="input-group">
+                        <label>बिक्री मूल्य (₹)</label>
+                        <input type="text" id="field-19">
+                    </div>
+                    <div class="input-group fixed">
+                        <label>खरिदने का उद्देश्य</label>
+                        <input type="text" id="field-20" value="Commercial Use" readonly>
+                    </div>
+                </div>
+
+                <div class="section-title">वाहन एवं चालक (Vehicle & Driver)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>वाहन संख्या एवं प्रकार</label>
+                        <input type="text" id="field-21">
+                    </div>
+                    <div class="input-group">
+                        <label>चालक का नाम</label>
+                        <input type="text" id="field-22">
+                    </div>
+                    <div class="input-group fixed">
+                        <label>चालक का पता</label>
+                        <input type="text" id="field-23" value="NA" readonly>
+                    </div>
+                    <div class="input-group fixed">
+                        <label>चालक का मोबाइल नंबर</label>
+                        <input type="text" id="field-24" value="XXXXXXXXXX" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>ट्रांसपोर्टर का नाम</label>
+                        <input type="text" id="field-25">
+                    </div>
+                    <div class="input-group">
+                        <label>ट्रांसपोर्टर मोबाइल नंबर</label>
+                        <input type="text" id="field-26">
+                    </div>
+                </div>
+
+                <div class="section-title">निर्गतकर्ता विवरण (Issuer Details)</div>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>चालान निर्गतकर्ता का नाम</label>
+                        <input type="text" id="field-issuer">
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-top: 2rem;">
+                    <button type="submit" class="submit-btn" id="submit-btn">
+                        Generate Challan
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- CHALLAN PREVIEW OVERLAY -->
+    <div id="preview-overlay">
+        <div class="preview-content">
+            <div class="preview-actions no-print">
+                <button class="btn-secondary" onclick="closePreview()">Edit Back</button>
+                <button class="btn-print" onclick="window.print()">Print Challan</button>
+            </div>
+
+            <div class="challan-document" id="printable-challan">
+                <div class="challan-border-box">
+                    <div class="document-top-meta">
+                        <div class="meta-left">चालक की कॉपी <b>General</b></div>
+                        <div class="print-date">प्रिंट दिनांक : <span id="view-print-date"></span></div>
+                    </div>
+
+                    <div class="challan-header">
+                        <div class="type">CHALLAN - A</div>
+                        <div class="main-title">खनिज अभिवहन पास / चालान</div>
+                        <div class="dept-name">खान और भूतत्व विभाग</div>
+                        <div class="state-name">बिहार सरकार</div>
+                    </div>
+
+                    <div class="barcode-container">
+                        <svg id="barcode-canvas"></svg>
+                        <div class="barcode-number" id="view-ref-no"></div>
+                    </div>
+
+                    <div class="challan-body-content">
+                        <!-- Linear Fields -->
+                        <div class="data-row">
+                            <div class="row-label">चालान / पास नं.</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value challan-pass-no" id="view-1"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">1. वर्ष</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-2"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">2. घाट / खदान का स्थान एवं क्षेत्र</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-3"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">3. जीपी घाट की खपन / खदान</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value">NA</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">4. घाट / खदान की वार्षिक ई-कैप</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-5"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">5. सेटली का नाम एवं पता</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-6"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">6. सेटली का मोबाइल नंबर</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-7"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">7. पट्टे की समाप्ति की तारीख</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-8"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">8. इस चालान के जारी करने की तारीख और समय</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-9"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">9. चालान अवधि समाप्ति की तारीख / समय</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-10"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">10. ग्राहक का नाम</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-11"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">11. ग्राहक का मोबाइल नंबर</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-12"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">12. वाहन का गंतव्य स्थान</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-13"></div>
+                        </div>
+
+                        <div class="middle-section-with-qr">
+                            <div class="left-data">
+                                <div class="data-row">
+                                    <div class="row-label">13. खनिज का नाम</div>
+                                    <div class="row-sep">:</div>
+                                    <div class="row-value bold" id="view-14"></div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="row-label">14. खनिज का प्रकार</div>
+                                    <div class="row-sep">:</div>
+                                    <div class="row-value">Minor</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="row-label">15. खनिज का वजन</div>
+                                    <div class="row-sep">:</div>
+                                    <div class="row-value" id="view-16"></div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="row-label">16. खनिज की मात्रा</div>
+                                    <div class="row-sep">:</div>
+                                    <div class="row-value" id="view-17"></div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="row-label">17. धर्म काँटा का नाम और स्थान</div>
+                                    <div class="row-sep">:</div>
+                                    <div class="row-value" id="view-18"></div>
+                                </div>
+                            </div>
+                            <div class="floating-qr">
+                                <a id="qr-link" target="_blank"
+                                    style="display: block; cursor: pointer; text-decoration: none;">
+                                    <div id="qrcode"></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="data-row">
+                            <div class="row-label">18. बिक्री मूल्य (रुपये में)</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-19"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">19. खनिज खरीदने का उद्देश्य</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value">Commercial Use</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">20. इंजन संख्या एवं प्रकार</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-21"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">21. चालक का नाम</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-22"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">22. चालक का पता</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value">NA</div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">23. चालक का मोबाइल नंबर</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-24"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">24. ट्रांसपोर्टर का नाम</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-25"></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="row-label">25. ट्रांसपोर्टर मोबाइल नंबर</div>
+                            <div class="row-sep">:</div>
+                            <div class="row-value" id="view-26"></div>
+                        </div>
+                    </div>
+
+                    <div class="challan-footer-new">
+                        <div class="sig-section">
+                            <div class="sig-line">signature of the setlee or his representative</div>
+                        </div>
+                        <div class="sig-section">
+                            <div class="sig-line">signature of the Driver</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="assets/js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Outfit:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #0b3d91;
+    --border-color: #e2e8f0;
+    --transition: all 0.2s ease;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+    background: #f0f4f8;
+    color: #1e293b;
+}
+
+/* FORM STYLES */
+.app-container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
+.portal-header {
+    display: flex; align-items: center; gap: 1.5rem;
+    background: white; padding: 1rem 2.5rem;
+    border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+.gov-emblem { height: 60px; }
+.header-text h1 { color: var(--primary-color); font-size: 1.4rem; }
+.form-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+.section-title { font-size: 1rem; color: var(--primary-color); margin: 1.2rem 0 0.8rem; font-weight: 700; border-bottom: 2px solid var(--border-color); padding-bottom: 5px; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.input-group { display: flex; flex-direction: column; gap: 0.3rem; }
+.input-group label { font-size: 0.8rem; font-weight: 600; color: #475569; }
+.input-group input, .input-group select { padding: 0.6rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.85rem; }
+.input-group.fixed input { background: #f8fafc; color: #64748b; cursor: default; }
+.radio-options { display: flex; gap: 1rem; padding: 0.4rem 0; }
+.radio-label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; cursor: pointer; }
+
+.submit-btn {
+    background: var(--primary-color); color: white; border: none; padding: 0.8rem 2rem;
+    border-radius: 8px; font-weight: 700; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; gap: 8px; transition: var(--transition);
+    width: fit-content; margin-left: auto; margin-top: 1.5rem;
+}
+
+/* CHALLAN PREVIEW OVERLAY */
+#preview-overlay { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: #525659; 
+    z-index: 1000; 
+    overflow-y: auto; 
+    padding: 20px 0; 
+}
+.preview-content { 
+    width: fit-content;
+    margin: 0 auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.preview-actions { 
+    display: flex; 
+    justify-content: center; 
+    gap: 15px; 
+    margin-bottom: 20px; 
+    background: white; 
+    padding: 12px 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 100%;
+}
+.btn-secondary, .btn-print { padding: 10px 25px; border-radius: 5px; cursor: pointer; font-weight: 700; border: none; font-size: 0.9rem; }
+.btn-secondary { background: #f1f5f9; color: #333; border: 1px solid #cbd5e1; }
+.btn-print { background: #10b981; color: white; }
+
+/* COMPACT CHALLAN DOCUMENT */
+.challan-document {
+    background: white; width: 8.77cm; height: 16.74cm; 
+    margin: 0 auto; font-family: 'Outfit', 'Noto Sans Devanagari', sans-serif;
+    color: #000; overflow: hidden;
+}
+.challan-border-box {
+    border: 1.5px solid #000; padding: 3mm 4mm; width: 100%; height: 100%;
+    position: relative; display: flex; flex-direction: column;
+}
+.document-top-meta { display: flex; justify-content: space-between; font-size: 6.2pt; font-weight: 700; margin-bottom: 2mm; }
+.challan-header { text-align: center; margin-bottom: 2.5mm; }
+.challan-header .type { font-size: 6.8pt; font-weight: 700; }
+.challan-header .main-title { font-size: 10pt; font-weight: 700; margin: 0.8mm 0; }
+.challan-header .dept-name, .challan-header .state-name { font-size: 7.8pt; font-weight: 700; }
+.barcode-container { text-align: center; margin-bottom: 3.5mm; }
+#barcode-canvas { height: 35px; width: 100%; }
+.barcode-number { font-size: 10.5pt; font-weight: 700; margin-top: 0.5mm; letter-spacing: 1.2px; }
+.challan-body-content { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.data-row { display: flex; font-size: 6.6pt; align-items: flex-start; line-height: 1.2; }
+.row-label { width: 33mm; font-weight: 700; }
+.row-sep { width: 2.5mm; text-align: center; font-weight: 700; }
+.row-value { flex: 1; font-weight: 700; word-break: break-word; }
+.middle-section-with-qr { display: flex; align-items: flex-start; justify-content: space-between; position: relative; }
+.left-data { flex: 1; display: flex; flex-direction: column; gap: 0.8mm; }
+.floating-qr { width: 55px; text-align: right; margin-top: 0.5mm; }
+#qrcode img { width: 55px !important; height: 55px !important; border: none !important; }
+.challan-footer-new {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-top: 5mm; padding-bottom: 2mm;
+}
+.sig-section { width: 45%; }
+.sig-line { 
+    text-align: center; font-size: 6pt; font-weight: 700; 
+    border-top: 1.2px solid #000; padding-top: 1.2mm; width: 100%;
+}
+
+/* VERIFICATION VIEW STYLES - FULL MATCH */
+#verify-view { 
+    background: #f0f0f0; 
+    min-height: 100vh; 
+    font-family: Arial, sans-serif; 
+    padding: 0;
+    color: #333;
+}
+.v-header-fixed { 
+    display: flex; 
+    align-items: center; 
+    border-bottom: 2px solid #5d9741; 
+    padding: 10px 10%; 
+    background: white; 
+    margin-bottom: 25px;
+    width: 100%;
+    min-height: 80px;
+}
+.v-header-fixed img { height: 60px; object-fit: contain; }
+.v-text h2 { 
+    color: #002e4d; 
+    font-size: 2.1rem; 
+    margin: 0; 
+    font-weight: 700; 
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    line-height: 1.1;
+}
+.v-text p { color: #000; margin: 0; font-size: 1.1rem; font-weight: 500; font-family: Arial, sans-serif; }
+
+.v-content-card { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+.v-tab-green { 
+    background: #4b8b3b; color: white; padding: 6px 14px; font-weight: bold; 
+    font-size: 0.85rem; border-radius: 4px; border: none;
+    margin-bottom: 15px; display: inline-block; cursor: default;
+}
+.v-fieldset { 
+    border: 1px solid #c0c0c0; 
+    padding: 25px 40px; 
+    background: white; 
+    border-radius: 2px;
+    position: relative;
+    margin-top: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.v-fieldset legend { 
+    font-weight: 700; color: #000; font-size: 13px; padding: 0 10px;
+    position: absolute; top: -10px; left: 15px; background: white;
+    border: none;
+}
+.v-table { width: 100%; border-collapse: collapse; }
+.v-table td { padding: 9px 5px; vertical-align: top; font-size: 14.5px; border: none; }
+.v-lbl { width: 32%; color: #333; font-weight: normal; font-family: Arial, sans-serif; }
+.v-s { width: 20px; text-align: center; font-weight: bold; }
+.v-val { width: 66%; font-weight: bold; color: #0001bc; font-family: Arial, sans-serif; }
+.v-val.red-bold { color: #d00000; font-size: 16px; }
+
+.v-footer-text { text-align: center; font-size: 0.85rem; color: #333; margin: 40px 0 20px; }
+
+@media print {
+    @page { size: A4 portrait; margin: 0; }
+    #preview-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex !important; justify-content: center; align-items: center; }
+    .preview-actions, .no-print, .app-container { display: none !important; }
+    .challan-document { width: 8.77cm; height: 16.74cm; border: none; }
+}
+
+@media (max-width: 768px) {
+    .v-header-fixed { padding: 10px 20px; }
+    .v-text h2 { font-size: 1.5rem; }
+    .v-fieldset { padding: 20px 15px; }
+    .v-lbl { width: 45%; }
+}
