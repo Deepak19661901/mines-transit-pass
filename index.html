@@ -133,6 +133,10 @@
                                 <input type="radio" name="mineral-type" value="SAND-YELLOWSAND(BALUGHAT)-NoSize">
                                 Yellow Sand
                             </label>
+                            <label class="radio-label">
+                                <input type="radio" name="mineral-type" value="STONE-STONE(DUST)-NoSize">
+                                Dust
+                            </label>
                         </div>
                         <input type="hidden" id="field-14" value="STONE-STONE(CHIPS)-40 MM">
                     </div>
@@ -144,9 +148,9 @@
                         <label>खनिज का वजन (Mt.)</label>
                         <input type="number" step="0.001" id="field-16">
                     </div>
-                    <div class="input-group fixed">
-                        <label>खनिज की मात्रा (Cft.) [Calculated]</label>
-                        <input type="text" id="field-17" readonly>
+                    <div class="input-group">
+                        <label>खनिज की मात्रा (Cft.)</label>
+                        <input type="text" id="field-17">
                     </div>
                     <div class="input-group">
                         <label>धर्म काँटा का नाम</label>
@@ -223,7 +227,6 @@
                 <div class="challan-border-box">
                     <div class="document-top-meta">
                         <div class="meta-left">चालक की कॉपी <b>General</b></div>
-                        <div class="print-date">प्रिंट दिनांक : <span id="view-print-date"></span></div>
                     </div>
 
                     <div class="challan-header">

@@ -31,9 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         generateChallan();
     });
-
-    document.getElementById('field-16').addEventListener('input', updateCft);
-    updateCft();
 });
 
 function setupFormDefaults() {
@@ -150,11 +147,6 @@ function updateExpiryDate(startStr) {
     document.getElementById('field-10').value = fmt(expiryDate);
 }
 
-function updateCft() {
-    const mt = parseFloat(document.getElementById('field-16').value) || 0;
-    const cft = (mt * 20).toFixed(2);
-    document.getElementById('field-17').value = cft;
-}
 
 function generateChallan() {
     const challanNo = document.getElementById('field-1').value;
@@ -163,7 +155,10 @@ function generateChallan() {
     const printDate = new Date().toLocaleString();
 
     const mineral = document.querySelector('input[name="mineral-type"]:checked').value;
-    const mineralPretty = mineral === "STONE-STONE(CHIPS)-40 MM" ? "STONE (STONE(CHIPS)-40 MM)" : mineral;
+    let mineralPretty = mineral;
+    if (mineral === "STONE-STONE(CHIPS)-40 MM") mineralPretty = "Stone Chips";
+    if (mineral === "SAND-YELLOWSAND(BALUGHAT)-NoSize") mineralPretty = "Yellow Sand";
+    if (mineral === "STONE-STONE(DUST)-NoSize") mineralPretty = "Dust";
 
     const params = new URLSearchParams();
     params.set('verify', 'true');
@@ -184,7 +179,8 @@ function generateChallan() {
     document.getElementById('qr-link').href = verifyUrl;
 
     // Fill UI
-    document.getElementById('view-print-date').textContent = printDate;
+    const printDateElem = document.getElementById('view-print-date');
+    if (printDateElem) printDateElem.textContent = printDate;
     document.getElementById('view-ref-no').textContent = refNo;
     document.getElementById('view-1').textContent = challanNo;
     document.getElementById('view-2').textContent = document.getElementById('field-2').value;
