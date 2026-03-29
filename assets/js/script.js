@@ -124,6 +124,17 @@ function setupFormDefaults() {
     document.getElementById('field-9-picker').addEventListener('change', (e) => {
         updateExpiryDate(e.target.value);
     });
+
+    // Auto calculate Cft. based on Mt. (1 Mt. = 21 Cft.)
+    document.getElementById('field-16').addEventListener('input', (e) => {
+        const mtVal = parseFloat(e.target.value);
+        if (!isNaN(mtVal)) {
+            const cftVal = mtVal * 21;
+            document.getElementById('field-17').value = parseFloat(cftVal.toFixed(3));
+        } else {
+            document.getElementById('field-17').value = "";
+        }
+    });
 }
 
 function updateExpiryDate(startStr) {
